@@ -37,13 +37,10 @@ RUN adduser --disabled-password \
 
 RUN setfacl -R -m u:${NB_UID}:rwx ${HOME}
 
-RUN ls
-COPY . ${HOME}
 
-RUN ls
 WORKDIR ${HOME}
+COPY . /
 
-RUN ls
 RUN apt-get install $(grep -vE "^\s*#" ./binder/apt.txt  | tr "\n" " ")
 
 USER ${NB_USER}
