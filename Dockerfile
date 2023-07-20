@@ -21,10 +21,13 @@ RUN echo "deb [ arch=amd64,arm64 signed-by=/usr/share/keyrings/mongodb-server-6.
 RUN curl -fsSL https://deb.nodesource.com/setup_18.x | sudo -E bash - &&\
 sudo apt-get install -y nodejs
 
+RUN sudo apt-get -qq update && \
+    sudo apt-get -qq install --yes redis-tools acl cassandra mongodb-org
+
 RUN sudo dpkg --configure -a
 
 RUN sudo apt-get -qq update && \
-    sudo apt-get -qq install --yes redis-stack-server redis-tools acl cassandra mongodb-org
+    sudo apt-get -qq install --yes redis-stack-server
 
 RUN systemctl disable mongod.service
 
