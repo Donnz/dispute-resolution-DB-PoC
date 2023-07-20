@@ -47,8 +47,10 @@ RUN git clone ${GIT_PREFIX}/${GIT_USER}/${GIT_REPO}
 WORKDIR ${HOME}/${GIT_REPO}
 
 RUN apt-get install $(grep -vE "^\s*#" ./binder/apt.txt  | tr "\n" " ")
+
+USER ${NB_USER}
 RUN pip3 install -r ./binder/requirements.txt
-RUN chmod +x binder/postBuild
+USER root
 
 RUN apt-get -qq purge && \
     apt-get -qq clean && \
@@ -56,11 +58,9 @@ RUN apt-get -qq purge && \
     apt-get autoremove -y && \
     rm -rf /var/lib/apt/lists/*
 
-USER ${NB_USER}
-
-RUN chmod +x binder/postBuild
 RUN ./binder/postBuild
 
+USER ${NB_USER}
 # Specify the default command to run
 CMD ["jupyter", "notebook", "--ip", "0.0.0.0"]
 
