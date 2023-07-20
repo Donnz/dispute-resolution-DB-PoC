@@ -1,0 +1,24 @@
+#!/bin/bash
+
+mkdir logs
+
+chmod +x ~/binder/start.mongodb 
+chmod +x ~/binder/start.adminmongo 
+chmod +x ~/binder/start.cassandra
+
+# starting mongodb
+~/binder/start.mongodb   &
+
+# starting cassandra
+~/binder/start.cassandra   &
+
+# starting redis in parallel
+~/binder/start.redis &
+
+cd ~
+echo " " >> .gitignore
+echo "resources/local/" >> .gitignore
+echo ".local/" >> .gitignore
+echo "local-home/" >> .gitignore
+
+exec "$@"

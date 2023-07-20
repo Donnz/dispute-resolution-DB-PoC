@@ -40,7 +40,7 @@ WORKDIR ${HOME}
 RUN setfacl -R -m u:root:rwx ${HOME}
 RUN setfacl -R -m u:${NB_UID}:rwx ${HOME}
 
-COPY . .
+COPY . ./
 RUN ls -R
 
 RUN apt-get install $(grep -vE "^\s*#" ./binder/apt.txt  | tr "\n" " ")
