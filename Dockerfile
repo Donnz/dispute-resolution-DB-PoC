@@ -27,9 +27,6 @@ ENV SHELL /bin/bash
 # Set up user
 ARG NB_USER=disputer
 ARG NB_UID=1000
-ARG GIT_PREFIX=https://github.com
-ARG GIT_USER=Donnz
-ARG GIT_REPO=dispute-resolution-DB-PoC
 
 ENV USER ${NB_USER}
 ENV HOME /home/${NB_USER}
@@ -40,16 +37,13 @@ RUN adduser --disabled-password \
 
 RUN setfacl -R -m u:${NB_UID}:rwx ${HOME}
 
-# building the repo
+COPY . ${HOME}
 WORKDIR ${HOME}
 
-RUN git clone ${GIT_PREFIX}/${GIT_USER}/${GIT_REPO}
-WORKDIR ${HOME}/${GIT_REPO}
-RUN ls
 RUN apt-get install $(grep -vE "^\s*#" ./binder/apt.txt  | tr "\n" " ")
-RUN ls
+
 USER ${NB_USER}
-RUN ls
+
 RUN pip3 install -r requirements.txt
 USER root
 
