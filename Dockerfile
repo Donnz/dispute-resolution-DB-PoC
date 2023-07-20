@@ -22,16 +22,7 @@ RUN curl -fsSL https://deb.nodesource.com/setup_18.x | sudo -E bash - &&\
 sudo apt-get install -y nodejs
 
 RUN sudo apt-get -qq update && \
-    sudo apt-get -qq install --yes redis-tools cassandra mongodb-org
-
-RUN ps -p 1 -o comm=
-
-RUN sudo dpkg --configure -a
-
-RUN sudo apt-get -qq update && \
-    sudo apt-get -qq install --yes redis-stack-server
-
-RUN chkconfig mongod.service on
+    sudo apt-get -qq install --yes redis-stack-server redis-tools cassandra mongodb-org
 
 # Set up locales properly
 RUN echo "en_US.UTF-8 UTF-8" > /etc/locale.gen && \
