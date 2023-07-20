@@ -18,6 +18,9 @@ RUN echo "deb https://debian.cassandra.apache.org 41x main" | sudo tee -a /etc/a
 RUN echo "deb http://cz.archive.ubuntu.com/ubuntu trusty main" | sudo tee /etc/apt/sources.list.d/acl.list
 RUN echo "deb [ arch=amd64,arm64 signed-by=/usr/share/keyrings/mongodb-server-6.0.gpg ] https://repo.mongodb.org/apt/ubuntu focal/mongodb-org/6.0 multiverse" | sudo tee /etc/apt/sources.list.d/mongodb-org-6.0.list
 
+RUN curl -fsSL https://deb.nodesource.com/setup_18.x | sudo -E bash - &&\
+sudo apt-get install -y nodejs
+
 RUN sudo apt-get -qq update && \
     sudo apt-get -qq install --yes redis-stack-server redis-tools acl cassandra mongodb-org
 

@@ -15,5 +15,3 @@ gdb
 gcc
 build-essential
 libc-bin
-nodejs
-npm
