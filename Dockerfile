@@ -35,9 +35,13 @@ RUN adduser --disabled-password \
     --uid ${NB_UID} \
     ${NB_USER}
 
+RUN chmod +x ${NB_UID} ${HOME}
+
 # building the repo
+WORKDIR ${HOME}
+
 RUN git clone ${GIT_PREFIX}/${GIT_USER}/${GIT_REPO}
-WORKDIR /jupyter/data/${GITHUB_REPO}
+WORKDIR ${HOME}/${GIT_REPO}
 
 RUN apt-get install $(grep -vE "^\s*#" ./binder/apt.txt  | tr "\n" " ")
 RUN pip3 install -r ./binder/requirements.txt
