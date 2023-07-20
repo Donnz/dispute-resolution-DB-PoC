@@ -49,7 +49,8 @@ WORKDIR ${HOME}/${GIT_REPO}
 RUN apt-get install $(grep -vE "^\s*#" ./binder/apt.txt  | tr "\n" " ")
 
 USER ${NB_USER}
-RUN pip3 install -r ./binder/requirements.txt
+RUN ls
+RUN pip3 install -r requirements.txt
 USER root
 
 RUN apt-get -qq purge && \
