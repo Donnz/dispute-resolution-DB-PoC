@@ -3,7 +3,6 @@
 mkdir logs
 
 chmod +x ~/binder/start.mongodb 
-chmod +x ~/binder/start.adminmongo 
 chmod +x ~/binder/start.cassandra
 
 # starting mongodb

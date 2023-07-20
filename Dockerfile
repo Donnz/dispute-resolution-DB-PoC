@@ -48,6 +48,7 @@ WORKDIR ${HOME}
 RUN setfacl -R -m u:root:rwx ${HOME}
 RUN setfacl -R -m u:${NB_UID}:rwx ${HOME}
 RUN setfacl -R -m u:${NB_UID}:rwx /var
+RUN chown -R ${NB_UID} /
 
 COPY . ./
 RUN apt-get install -y --no-install-recommends - $(grep -vE "^\s*#" ./setup/apt.txt  | tr "\n" " ")
@@ -62,6 +63,9 @@ RUN apt-get -qq purge && \
 
 RUN chmod +x ./setup/postBuild
 RUN ./setup/postBuild
+
+RUN chmod +x ./setup/start
+RUN ./setup/start
 
 USER ${NB_USER}
 # Specify the default command to run
