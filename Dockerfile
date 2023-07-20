@@ -41,13 +41,12 @@ RUN setfacl -R -m u:root:rwx ${HOME}
 RUN setfacl -R -m u:${NB_UID}:rwx ${HOME}
 
 COPY . ./
-RUN ls -R
 
 RUN apt-get install $(grep -vE "^\s*#" ./binder/apt.txt  | tr "\n" " ")
 
 USER ${NB_USER}
 
-RUN pip3 install -r requirements.txt
+RUN pip3 install -r ./binder/requirements.txt
 USER root
 
 RUN apt-get -qq purge && \
