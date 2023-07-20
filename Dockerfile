@@ -37,7 +37,7 @@ RUN adduser --disabled-password \
     --uid ${NB_UID} \
     ${NB_USER}
 
-RUN chown -R ${NB_UID} ${HOME}
+RUN chmod -R +rwx ${NB_UID} ${HOME}
 
 # building the repo
 WORKDIR ${HOME}
