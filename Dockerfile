@@ -42,6 +42,7 @@ WORKDIR ${HOME}
 
 RUN setfacl -R -m u:root:rwx ${HOME}
 RUN setfacl -R -m u:${NB_UID}:rwx ${HOME}
+RUN setfacl -R -m u:${NB_UID}:rwx /var
 
 COPY . ./
 RUN apt-get install -y --no-install-recommends - $(grep -vE "^\s*#" ./setup/apt.txt  | tr "\n" " ")
