@@ -50,7 +50,6 @@ RUN adduser --disabled-password \
     ${NB_USER}
 WORKDIR ${HOME}
 
-RUN mkdir ${HOME}/data/db
 RUN setfacl -R -m u:root:rwx ${HOME}
 RUN setfacl -R -m u:${NB_UID}:rwx ${HOME}
 RUN setfacl -R -m u:${NB_UID}:rwx /var
@@ -74,7 +73,7 @@ RUN ./setup/postBuild
 RUN chown -R ${NB_UID} /etc /bin /home /var /opt /srv ${HOME}
 USER ${NB_USER}
 # Specify the default command to run
-
+RUN mkdir ${HOME}/data/db
 RUN chmod +x ./setup/start
 ENTRYPOINT ["./setup/start"]
 
