@@ -22,11 +22,11 @@ ENV LANGUAGE en_US.UTF-8
 ENV SHELL /bin/bash
 
 # Set up user
-ARG NB_USER=Donnz
+ARG NB_USER=disputer
 ARG NB_UID=1000
 ARG GIT_PREFIX=https://github.com
 ARG GIT_USER=Donnz
-ARG GIT_REPO=Donnz/lab-template
+ARG GIT_REPO=Donnz/dispute-resolution-DB-PoC
 
 ENV USER ${NB_USER}
 ENV HOME /home/${NB_USER}
@@ -49,13 +49,8 @@ RUN apt-get -qq purge && \
     apt-get autoremove -y && \
     rm -rf /var/lib/apt/lists/*
 
-# RUN mkdir conda-bld
-# RUN rm conda-bld -R
-
-# We always want containers to run as non-root
 USER ${NB_USER}
 
-# Make sure that postBuild scripts are marked executable before executing them
 RUN chmod +x binder/postBuild
 RUN ./binder/postBuild
 
