@@ -1,5 +1,7 @@
 FROM ubuntu:focal
 
+USER root
+
 RUN apt-get -qq update && \
     apt-get -qq install --yes --no-install-recommends locales curl git htop vim wget python3-pip less unzip lsb-release gpg sudo apt-utils
 
@@ -35,7 +37,7 @@ RUN adduser --disabled-password \
     --uid ${NB_UID} \
     ${NB_USER}
 
-RUN chmod +x ${NB_UID} ${HOME}
+RUN chown -R ${NB_UID} ${HOME}
 
 # building the repo
 WORKDIR ${HOME}
