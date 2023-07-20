@@ -6,7 +6,7 @@ ENV TZ=Etc/Universal
 RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
 
 RUN apt-get -qq update && \
-    apt-get -qq install --yes --no-install-recommends locales curl git htop vim wget python3-pip less unzip lsb-release gpg sudo apt-utils gnupg
+    apt-get -qq install --yes --no-install-recommends locales curl git htop vim wget python3-pip less unzip lsb-release gpg sudo apt-utils gnupg systemd
 
 RUN curl -fsSL https://packages.redis.io/gpg | sudo gpg --dearmor -o /usr/share/keyrings/redis-archive-keyring.gpg
 RUN curl https://downloads.apache.org/cassandra/KEYS | sudo apt-key add -
