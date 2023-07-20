@@ -46,10 +46,7 @@ RUN setfacl -R -m u:${NB_UID}:rwx ${HOME}
 COPY . ./
 RUN apt-get install -y --no-install-recommends - $(grep -vE "^\s*#" ./setup/apt.txt  | tr "\n" " ")
 
-USER ${NB_USER}
-
 RUN pip3 install -r ./setup/requirements.txt
-USER root
 
 RUN apt-get -qq purge && \
     apt-get -qq clean && \
