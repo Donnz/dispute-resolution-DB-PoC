@@ -37,7 +37,7 @@ RUN adduser --disabled-password \
     --uid ${NB_UID} \
     ${NB_USER}
 
-RUN chmod -R +rwx ${NB_UID} ${HOME}
+RUN setfacl -R +rwx u:${NB_UID}:rwx ${HOME}
 
 # building the repo
 WORKDIR ${HOME}
