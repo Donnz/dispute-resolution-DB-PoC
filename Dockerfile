@@ -51,7 +51,6 @@ WORKDIR ${HOME}
 RUN setfacl -R -m u:root:rwx ${HOME}
 RUN setfacl -R -m u:${NB_UID}:rwx ${HOME}
 RUN setfacl -R -m u:${NB_UID}:rwx /var
-RUN chown -R ${NB_UID} /etc /bin /home /var /opt /srv ${HOME}
 
 COPY . ./
 RUN apt-get install -y --no-install-recommends - $(grep -vE "^\s*#" ./setup/apt.txt  | tr "\n" " ")
@@ -70,8 +69,9 @@ RUN ./setup/postBuild
 RUN chmod +x ./setup/start
 RUN ./setup/start
 
+RUN chown -R ${NB_UID} /etc /bin /home /var /opt /srv ${HOME}
 USER ${NB_USER}
 # Specify the default command to run
-CMD ["jupyter", "notebook", "--ip", "0.0.0.0"]
+ENTRYPOINT ["./setup/start"]
 
 CMD jupyter-lab --ip=0.0.0.0 --port=8888 --no-browser --notebook-dir=/labs --allow-root --NotebookApp.token=''
