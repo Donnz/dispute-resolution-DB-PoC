@@ -54,6 +54,7 @@ RUN apt-get -qq purge && \
     apt-get autoremove -y && \
     rm -rf /var/lib/apt/lists/*
 
+RUN chmod +x ./setup/postBuild
 RUN ./setup/postBuild
 
 USER ${NB_USER}
