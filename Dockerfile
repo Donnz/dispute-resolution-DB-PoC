@@ -26,7 +26,7 @@ ARG NB_USER=disputer
 ARG NB_UID=1000
 ARG GIT_PREFIX=https://github.com
 ARG GIT_USER=Donnz
-ARG GIT_REPO=Donnz/dispute-resolution-DB-PoC
+ARG GIT_REPO=dispute-resolution-DB-PoC
 
 ENV USER ${NB_USER}
 ENV HOME /home/${NB_USER}
