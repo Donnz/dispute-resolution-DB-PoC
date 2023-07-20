@@ -11,7 +11,7 @@ RUN echo "deb [signed-by=/usr/share/keyrings/redis-archive-keyring.gpg] https://
 RUN echo "deb http://cz.archive.ubuntu.com/ubuntu trusty main" | sudo tee /etc/apt/sources.list.d/acl.list
 
 RUN sudo apt-get -qq update && \
-    sudo apt-get -qq install --yes redis-stack-server redis-tools
+    sudo apt-get -qq install --yes redis-stack-server redis-tools acl
 
 # Set up locales properly
 RUN echo "en_US.UTF-8 UTF-8" > /etc/locale.gen && \
