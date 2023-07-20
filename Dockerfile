@@ -50,6 +50,7 @@ RUN adduser --disabled-password \
     ${NB_USER}
 WORKDIR ${HOME}
 
+RUN mkdir ${HOME}/data/db
 RUN setfacl -R -m u:root:rwx ${HOME}
 RUN setfacl -R -m u:${NB_UID}:rwx ${HOME}
 RUN setfacl -R -m u:${NB_UID}:rwx /var

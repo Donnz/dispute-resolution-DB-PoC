@@ -28,7 +28,6 @@ nohup /opt/apache-cassandra-*/bin/cassandra &> ~/logs/cassandra.log &
 #    sleep 1
 #done
 
-mkdir ${HOME}/data/db
 nohup mongod --replSet rs0 --dbpath ${HOME}/data/db &> ~/logs/mongodb.log &
 
 sleep 10
