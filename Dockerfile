@@ -24,6 +24,8 @@ sudo apt-get install -y nodejs
 RUN sudo apt-get -qq update && \
     sudo apt-get -qq install --yes redis-tools cassandra mongodb-org
 
+RUN ps -p 1 -o comm=
+
 RUN sudo dpkg --configure -a
 
 RUN sudo apt-get -qq update && \
