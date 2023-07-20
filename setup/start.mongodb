@@ -1,6 +1,0 @@
-#!/bin/bash
-makedir ${HOME}/data/db
-nohup sudo systemctl daemon-reload
-nohup mongod --replSet rs0 --dbpath ${HOME}/data/db &
-
-sleep 5

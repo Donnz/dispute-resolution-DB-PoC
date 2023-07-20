@@ -24,6 +24,8 @@ sudo apt-get install -y nodejs
 RUN sudo apt-get -qq update && \
     sudo apt-get -qq install --yes redis-stack-server redis-tools acl cassandra mongodb-org
 
+RUN systemctl disable mongod.service
+
 # Set up locales properly
 RUN echo "en_US.UTF-8 UTF-8" > /etc/locale.gen && \
     locale-gen
@@ -66,12 +68,13 @@ RUN apt-get -qq purge && \
 RUN chmod +x ./setup/postBuild
 RUN ./setup/postBuild
 
-RUN chmod +x ./setup/start
-RUN ./setup/start
+
 
 RUN chown -R ${NB_UID} /etc /bin /home /var /opt /srv ${HOME}
 USER ${NB_USER}
 # Specify the default command to run
+
+RUN chmod +x ./setup/start
 ENTRYPOINT ["./setup/start"]
 
 CMD jupyter-lab --ip=0.0.0.0 --port=8888 --no-browser --notebook-dir=/labs --allow-root --NotebookApp.token=''
