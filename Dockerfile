@@ -28,8 +28,6 @@ RUN sudo apt-get -qq update && \
 RUN echo "en_US.UTF-8 UTF-8" > /etc/locale.gen && \
     locale-gen
 
-RUN echo ${CASSANDRA_HOME}
-
 ENV LC_ALL en_US.UTF-8
 ENV LANG en_US.UTF-8
 ENV LANGUAGE en_US.UTF-8
@@ -68,7 +66,7 @@ RUN apt-get -qq purge && \
 RUN chmod +x ./setup/postBuild
 RUN ./setup/postBuild
 
-
+RUN echo ${CASSANDRA_HOME}
 
 RUN chown -R ${NB_UID} /etc /bin /home /var /opt /srv ${HOME}
 USER ${NB_USER}
