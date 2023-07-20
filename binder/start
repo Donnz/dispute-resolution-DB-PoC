@@ -1,0 +1,27 @@
+#!/bin/bash
+
+mkdir logs
+
+
+chmod +x ~/binder/start.mongodb 
+chmod +x ~/binder/start.adminmongo 
+chmod +x ~/binder/start.cassandra
+
+# starting mongodb
+~/binder/start.mongodb   &
+
+# starting cassandra
+~/binder/start.cassandra   &
+
+# starting redis in parallel
+~/binder/start.redis &
+
+cd ~
+echo " " >> .gitignore
+echo "resources/local/" >> .gitignore
+echo ".local/" >> .gitignore
+echo "local-home/" >> .gitignore
+
+# DO NOT REMOVE(!) 
+# Here is why: https://mybinder.readthedocs.io/en/latest/config_files.html#start-run-code-before-the-user-sessions-starts
+exec "$@"

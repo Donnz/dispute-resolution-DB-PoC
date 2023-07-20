@@ -1,0 +1,113 @@
+#!/bin/bash
+
+###############################################################
+#          jupyter/jupyterlab extensions/kernels              #
+###############################################################
+
+# Building everything up
+echo "Building everything up (jupyter lab build)"
+jupyter lab build --dev-build
+
+
+###############################################################
+#             moving to a local installation folder           #
+###############################################################
+
+mkdir ~/resources/local
+cd    ~/resources/local
+
+
+###############################################################
+#             mongodb installation commands                   #
+###############################################################
+
+export MONGODB_VERSION=4.2.8
+echo "export MONGODB_VERSION=${MONGODB_VERSION}" >> ~/.bashrc
+echo "export MONGODB_VERSION=${MONGODB_VERSION}" >> ~/.profile
+
+export MONGODB_HOME=$(pwd)/mongodb-${MONGODB_VERSION}
+echo "export MONGODB_HOME=${MONGODB_HOME}"       >> ~/.bashrc
+echo "export MONGODB_HOME=${MONGODB_HOME}"       >> ~/.profile
+
+      
+wget  https://fastdl.mongodb.org/linux/mongodb-linux-x86_64-ubuntu1804-${MONGODB_VERSION}.tgz -q  && \
+tar -xvf mongodb-linux-x86_64-ubuntu1804-${MONGODB_VERSION}.tgz >/dev/null                        && \
+rm       mongodb-linux-x86_64-ubuntu1804-${MONGODB_VERSION}.tgz                                   && \
+mv       mongodb-linux-x86_64-ubuntu1804-${MONGODB_VERSION}        mongodb-${MONGODB_VERSION}      
+
+# adding bin and sbin to $path
+echo "export PATH=\$PATH:\$MONGODB_HOME/bin"  >> ~/.bashrc
+echo "export PATH=\$PATH:\$MONGODB_HOME/bin"  >> ~/.profile
+
+
+###############################################################
+#             cassandra installation commands                 #
+###############################################################
+
+export CASSANDRA_VERSION=4.1.1
+echo "export CASSANDRA_VERSION=${CASSANDRA_VERSION}" >> ~/.bashrc
+echo "export CASSANDRA_VERSION=${CASSANDRA_VERSION}" >> ~/.profile
+
+export CASSANDRA_HOME=$(pwd)/apache-cassandra-${CASSANDRA_VERSION}
+echo "export CASSANDRA_HOME=${CASSANDRA_HOME}"       >> ~/.bashrc
+echo "export CASSANDRA_HOME=${CASSANDRA_HOME}"       >> ~/.profile
+
+wget -q https://archive.apache.org/dist/cassandra/${CASSANDRA_VERSION}/apache-cassandra-${CASSANDRA_VERSION}-bin.tar.gz
+
+tar xzf apache-cassandra-${CASSANDRA_VERSION}-bin.tar.gz
+rm      apache-cassandra-${CASSANDRA_VERSION}-bin.tar.gz
+
+# adding bin and sbin to $path
+echo "export PATH=\$PATH:\$CASSANDRA_HOME/bin"  >> ~/.bashrc
+echo "export PATH=\$PATH:\$CASSANDRA_HOME/bin"  >> ~/.profile
+
+rm $CASSANDRA_HOME/conf/cassandra.yaml
+cp ~/resources/configs/cassandra/cassandra.yaml $CASSANDRA_HOME/conf/
+
+# Setting up cassandra connection
+python -m cqljupyter.install 127.0.0.1 9042
+
+###############################################################
+#                 redis installation commands                 #
+###############################################################
+
+#apt-get -qq update && \
+#apt-get -qq install --yes --no-install-recommends curl lsb-release gpg
+#
+#curl -fsSL https://packages.redis.io/gpg | sudo gpg --dearmor -o /usr/share/keyrings/redis-archive-keyring.gpg
+#sudo chmod 644 /usr/share/keyrings/redis-archive-keyring.gpg
+#echo "deb [signed-by=/usr/share/keyrings/redis-archive-keyring.gpg] https://packages.redis.io/deb $(lsb_release -cs) main" | sudo tee /etc/apt/sources.list.d/redis.list
+#
+#sudo apt-get -qq update && \
+#sudo apt-get -qq install --yes redis-stack-server redis-tools
+
+export REDIS_VERSION=6.0.5
+echo "export REDIS_VERSION=${REDIS_VERSION}" >> ~/.bashrc
+echo "export REDIS_VERSION=${REDIS_VERSION}" >> ~/.profile
+
+export REDIS_HOME=$(pwd)/redis-${REDIS_VERSION}
+echo "export REDIS_HOME=${REDIS_HOME}"       >> ~/.bashrc
+echo "export REDIS_HOME=${REDIS_HOME}"       >> ~/.profile
+
+       
+wget http://download.redis.io/releases/redis-${REDIS_VERSION}.tar.gz  && \
+tar xvzf redis-${REDIS_VERSION}.tar.gz                                && \
+rm       redis-${REDIS_VERSION}.tar.gz                                && \
+cd       redis-${REDIS_VERSION}
+make
+# make test
+
+mkdir bin
+cp src/redis-server bin/
+cp src/redis-cli bin/
+
+# adding bin/ to $path
+echo "export PATH=\$PATH:\$REDIS_HOME/bin"   >> ~/.bashrc
+echo "export PATH=\$PATH:\$REDIS_HOME/bin"   >> ~/.profile
+
+git clone --recursive https://github.com/RedisTimeSeries/RedisTimeSeries.git
+cd RedisTimeSeries
+./sbin/setup
+bash -l
+make
+make run -n
