@@ -73,7 +73,7 @@ RUN ./setup/postBuild
 RUN chown -R ${NB_UID} /etc /bin /home /var /opt /srv ${HOME}
 USER ${NB_USER}
 # Specify the default command to run
-RUN mkdir ${HOME}/data/db
+RUN mkdir ${HOME}/data/db -p
 RUN chmod +x ./setup/start
 ENTRYPOINT ["./setup/start"]
 
