@@ -42,11 +42,11 @@ RUN setfacl -R -m u:${NB_UID}:rwx ${HOME}
 
 COPY . ./
 
-RUN apt-get install $(grep -vE "^\s*#" ./binder/apt.txt  | tr "\n" " ")
+RUN apt-get install $(grep -vE "^\s*#" ./setup/apt.txt  | tr "\n" " ")
 
 USER ${NB_USER}
 
-RUN pip3 install -r ./binder/requirements.txt
+RUN pip3 install -r ./setup/requirements.txt
 USER root
 
 RUN apt-get -qq purge && \
@@ -55,7 +55,7 @@ RUN apt-get -qq purge && \
     apt-get autoremove -y && \
     rm -rf /var/lib/apt/lists/*
 
-RUN ./binder/postBuild
+RUN ./setup/postBuild
 
 USER ${NB_USER}
 # Specify the default command to run
