@@ -3,15 +3,20 @@ FROM ubuntu:focal
 USER root
 
 RUN apt-get -qq update && \
-    apt-get -qq install --yes --no-install-recommends locales curl git htop vim wget python3-pip less unzip lsb-release gpg sudo apt-utils
+    apt-get -qq install --yes --no-install-recommends locales curl git htop vim wget python3-pip less unzip lsb-release gpg sudo apt-utils gnupg
 
 RUN curl -fsSL https://packages.redis.io/gpg | sudo gpg --dearmor -o /usr/share/keyrings/redis-archive-keyring.gpg
+RUN curl https://downloads.apache.org/cassandra/KEYS | sudo apt-key add -
+RUN curl -fsSL https://pgp.mongodb.com/server-6.0.asc | sudo gpg -o /usr/share/keyrings/mongodb-server-6.0.gpg --dearmor
+
 RUN sudo chmod 644 /usr/share/keyrings/redis-archive-keyring.gpg
 RUN echo "deb [signed-by=/usr/share/keyrings/redis-archive-keyring.gpg] https://packages.redis.io/deb $(lsb_release -cs) main" | sudo tee /etc/apt/sources.list.d/redis.list
+RUN echo "deb https://debian.cassandra.apache.org 41x main" | sudo tee -a /etc/apt/sources.list.d/cassandra.sources.list
 RUN echo "deb http://cz.archive.ubuntu.com/ubuntu trusty main" | sudo tee /etc/apt/sources.list.d/acl.list
+RUN echo "deb [ arch=amd64,arm64 signed-by=/usr/share/keyrings/mongodb-server-6.0.gpg ] https://repo.mongodb.org/apt/ubuntu focal/mongodb-org/6.0 multiverse" | sudo tee /etc/apt/sources.list.d/mongodb-org-6.0.list
 
 RUN sudo apt-get -qq update && \
-    sudo apt-get -qq install --yes redis-stack-server redis-tools acl
+    sudo apt-get -qq install --yes redis-stack-server redis-tools acl cassandra mongodb-org
 
 # Set up locales properly
 RUN echo "en_US.UTF-8 UTF-8" > /etc/locale.gen && \
