@@ -30,16 +30,18 @@ ARG NB_UID=1000
 
 ENV USER ${NB_USER}
 ENV HOME /home/${NB_USER}
+
 RUN adduser --disabled-password \
     --gecos "Default user" \
     --uid ${NB_UID} \
     ${NB_USER}
+WORKDIR ${HOME}
 
+RUN setfacl -R -m u:root:rwx ${HOME}
 RUN setfacl -R -m u:${NB_UID}:rwx ${HOME}
 
-COPY . ${HOME}/
-WORKDIR ${HOME}
-RUN ls -la /
+COPY . .
+RUN ls -R
 
 RUN apt-get install $(grep -vE "^\s*#" ./binder/apt.txt  | tr "\n" " ")
 
